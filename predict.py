@@ -30,13 +30,17 @@ def predict():
     
     with open(json_name, 'r') as f:
         label_to_name = json.load(f)
+
         
     img = Image.open(image_path)
     img = np.asarray(img)
     process_image = process_img(img) 
     predict = model.predict(np.expand_dims(process_image, axis=0))
     top_values, top_indices = tf.math.top_k(predict, number_of_outputs)
-    top_classes = [label_to_name[str(value)] for value in top_indices.cpu().numpy()[0]]
+    top_classes = [label_to_name[str(value+1)] for value in top_indices.cpu().numpy()[0]]
+    
+    
+    
     return top_values.numpy()[0], top_classes
     
 if __name__=="__main__":
