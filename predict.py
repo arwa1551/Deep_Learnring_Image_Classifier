@@ -11,6 +11,7 @@ warnings.filterwarnings('ignore')
 def options():
     parser = argparse.ArgumentParser()
     parser.add_argument('--image_path', action="store", default = './test_images/orange_dahlia.jpg', type = str)
+    parser.add_argument('--model_path', action="store", default = './my_model.h5', type = str)
     parser.add_argument("--top_k", action="store", default=5, type=int)
     parser.add_argument("--category_names", action="store",default="label_map.json")
     return parser.parse_args()
@@ -26,7 +27,8 @@ def predict():
     number_of_outputs = args.top_k
     json_name = args.category_names
     image_path = args.image_path
-    model = tf.keras.models.load_model('./my_model.h5', custom_objects={'KerasLayer': hub.KerasLayer})
+    model_path = args.model_path
+    model = tf.keras.models.load_model(model_path, custom_objects={'KerasLayer': hub.KerasLayer})
     
     with open(json_name, 'r') as f:
         label_to_name = json.load(f)
